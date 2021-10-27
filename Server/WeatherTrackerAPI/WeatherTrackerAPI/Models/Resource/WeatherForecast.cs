@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace WeatherTrackerAPI.Models.Resource
 {
-    public class ResponseBody
+    public class WeatherResponseBody
     {
         public bool success { get; set; }
         public Result result { get; set; }

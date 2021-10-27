@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using RestSharp;
-using RestSharp.Authenticators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using WeatherTrackerAPI.Models.Resource;
+using WeatherTrackerAPI.Services;
 
 namespace WeatherTrackerAPI.Controllers
 {
@@ -22,14 +20,17 @@ namespace WeatherTrackerAPI.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
         private readonly IConfiguration Configuration;
+        private readonly IOpenDataProvider OpenDataProvider;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, IConfiguration configuration)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IConfiguration configuration, IOpenDataProvider openDataProvider)
         {
             _logger = logger;
             Configuration = configuration;
+            OpenDataProvider = openDataProvider;
         }
 
         [HttpGet]
+        [Route("Test")]
         public IEnumerable<WeatherForecast> Get()
         {
             var rng = new Random();
@@ -43,15 +44,9 @@ namespace WeatherTrackerAPI.Controllers
         }
 
         [HttpGet]
-        [Route("Test")]
         public Records GetWeatherForecasts()
         {
-            var client = new RestClient("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001");
-            var apiKey = Configuration["OpenDataAPIKey"];
-            var request = new RestRequest("", Method.GET).AddQueryParameter("Authorization", apiKey);
-            var response = client.Get<ResponseBody>(request);
-
-            return response.Data.records;
+            return OpenDataProvider.Get36HourWeatherForecast().records;
         }
     }
 }

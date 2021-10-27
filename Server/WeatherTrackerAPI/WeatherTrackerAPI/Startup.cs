@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WeatherTrackerAPI.Services;
 
 namespace WeatherTrackerAPI
 {
@@ -32,6 +33,8 @@ namespace WeatherTrackerAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WeatherTrackerAPI", Version = "v1" });
             });
+
+            services.AddSingleton<IOpenDataProvider, OpenDataProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
