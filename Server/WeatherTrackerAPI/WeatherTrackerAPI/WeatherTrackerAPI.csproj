@@ -11,10 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\View\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\WeatherTracker.Dapper\WeatherTracker.Dapper.csproj" />
   </ItemGroup>
 

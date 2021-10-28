@@ -12,6 +12,7 @@ namespace WeatherTracker.Dapper.IRepository
         // Extension Query
         Task<int> AddLog(QueryLog entity);
         Task<IEnumerable<QueryLog>> GetLogs(DateTime? startTime = null, DateTime? endTime = null);
-        Task<IEnumerable<QueryLog>> GetLatestLogs(int count);
+        Task<IEnumerable<QueryLog>> GetLatestLogs(int count = 1);
+        Task<QueryLog> GetLatestSuccess();
     }
 }

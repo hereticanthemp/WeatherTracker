@@ -11,8 +11,8 @@ namespace WeatherTracker.Dapper.Repository
 {
     public class QueryLogRepository : RepositoryBase<QueryLog>, IQueryLogRepository
     {
-        public QueryLogRepository(IConfiguration configuration) :base(configuration)
-        { 
+        public QueryLogRepository(IConfiguration configuration) : base(configuration)
+        {
 
         }
         public async Task<int> AddLog(QueryLog entity)
@@ -21,12 +21,20 @@ namespace WeatherTracker.Dapper.Repository
             return await Insert(entity, insertSql);
         }
 
-        Task<IEnumerable<QueryLog>> IQueryLogRepository.GetLatestLogs(int count)
+        public async Task<IEnumerable<QueryLog>> GetLatestLogs(int count = 1)
         {
-            throw new NotImplementedException();
+            if (count < 1) throw new ArgumentException();
+            var q = $"SELECT TOP {count} * FROM [dbo].[QueryLog] ORDER BY Id DESC";
+            return (await Select(q)).ToList();
         }
 
-        Task<IEnumerable<QueryLog>> IQueryLogRepository.GetLogs(DateTime? startTime, DateTime? endTime)
+        public async Task<QueryLog> GetLatestSuccess()
+        {
+            var q = $"SELECT TOP 1 * FROM [dbo].[QueryLog] WHERE RESULT=0 ORDER BY Id DESC";
+            return (await Select(q)).Single();
+        }
+
+        public async Task<IEnumerable<QueryLog>> GetLogs(DateTime? startTime, DateTime? endTime)
         {
             throw new NotImplementedException();
         }
