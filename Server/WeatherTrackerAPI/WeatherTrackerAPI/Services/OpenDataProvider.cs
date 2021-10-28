@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -10,13 +11,15 @@ namespace WeatherTrackerAPI.Services
 {
     public class OpenDataProvider : IOpenDataProvider
     {
+        private readonly ILogger<OpenDataProvider> _logger;
         private readonly IConfiguration Configuration;
 
         private RestClient client;
         private string apiKey;
 
-        public OpenDataProvider(IConfiguration configuration)
+        public OpenDataProvider(ILogger<OpenDataProvider> logger, IConfiguration configuration)
         {
+            _logger = logger;
             Configuration = configuration;
             client = new RestClient("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001");
             apiKey = Configuration["OpenDataAPIKey"];

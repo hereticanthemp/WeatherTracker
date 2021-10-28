@@ -8,7 +8,6 @@ namespace WeatherTrackerAPI.Models.Resource
         public bool success { get; set; }
         public Result result { get; set; }
         public Records records { get; set; }
-
     }
 
     public class Result
